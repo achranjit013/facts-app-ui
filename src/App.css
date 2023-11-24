@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #292524;
+  color: #fafaf9;
+  font-family: "Sono", sans-serif;
+  padding: 48px 64px 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Coiny", sans-serif;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-top: 6px;
+}
+
+h1 {
+  font-size: 42px;
+}
+
+h3 {
+  font-size: 32px;
+}
+
+ul {
+  list-style: none;
+}
