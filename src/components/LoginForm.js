@@ -5,24 +5,6 @@ import { styled } from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../helper/axiosHelper";
 
-// custom inputs
-const inputs = [
-  {
-    label: "Email",
-    type: "email",
-    name: "email",
-    required: true,
-    placeholder: "Enter your email address",
-  },
-  {
-    label: "Password",
-    type: "password",
-    name: "password",
-    required: true,
-    placeholder: "Enter your password",
-  },
-];
-
 // css
 const LoginFormContainer = styled(Form)`
   background: #44403c;
@@ -75,6 +57,24 @@ const SignupLink = styled(Link)`
 `;
 // end css
 
+// custom inputs
+const inputs = [
+  {
+    label: "Email",
+    type: "email",
+    name: "email",
+    required: true,
+    placeholder: "Enter your email address",
+  },
+  {
+    label: "Password",
+    type: "password",
+    name: "password",
+    required: true,
+    placeholder: "Enter your password",
+  },
+];
+
 export const LoginForm = () => {
   const [form, setForm] = useState({});
   const navigate = useNavigate();
@@ -93,13 +93,12 @@ export const LoginForm = () => {
 
     // call axios helper to make post api call for login
     const data = await loginUser(form);
-    console.log(data);
 
     if (data?.status === "success") {
       sessionStorage.setItem("user", JSON.stringify(data.user));
 
-      // navigate to user dashboard
-      navigate("/userDashboard");
+      // navigate to user-dashboard
+      navigate("/user-dashboard");
     }
   };
 

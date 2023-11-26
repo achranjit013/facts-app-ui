@@ -5,76 +5,6 @@ import { Form, FormLabel, FormSelect } from "react-bootstrap";
 import { CustomInput } from "./CustomInput";
 import { signupUser } from "../helper/axiosHelper";
 
-// custom inputs
-const primaryInputs = [
-  {
-    label: "Full name",
-    type: "text",
-    name: "fname",
-    required: true,
-    placeholder: "first name",
-  },
-  {
-    label: "",
-    type: "text",
-    name: "mname",
-    required: false,
-    placeholder: "middle name",
-  },
-  {
-    label: "",
-    type: "text",
-    name: "lname",
-    required: true,
-    placeholder: "last name",
-  },
-  {
-    label: "Address",
-    type: "text",
-    name: "street",
-    required: true,
-    placeholder: "street number & name",
-  },
-  {
-    label: "",
-    type: "text",
-    name: "suburb",
-    required: true,
-    placeholder: "suburb",
-  },
-  {
-    label: "",
-    type: "number",
-    name: "postcode",
-    required: true,
-    placeholder: "postcode",
-  },
-];
-
-const secondaryInputs = [
-  {
-    label: "Email",
-    type: "email",
-    name: "email",
-    required: true,
-    placeholder: "email address",
-  },
-  {
-    label: "Password",
-    type: "password",
-    name: "password",
-    required: true,
-    placeholder: "password",
-  },
-  {
-    label: "Confirm Password",
-    type: "password",
-    name: "confirmPassword",
-    required: true,
-    placeholder: "confirm password",
-  },
-];
-
 // css
 const SignupFormContainer = styled(Form)`
   background: #44403c;
@@ -153,23 +83,95 @@ const SelectField = styled(FormSelect)`
 `;
 // end css
 
-export const SignupForm = () => {
-  // const formInitialState = {
-  //   fname: "",
-  //   mname: "",
-  //   lname: "",
-  //   street: "",
-  //   suburb: "",
-  //   postcode: "",
-  //   states: "",
-  //   email: "",
-  //   password: "",
-  //   confirmPassword: "",
-  // };
+// custom inputs
+const primaryInputs = [
+  {
+    label: "Full name",
+    type: "text",
+    name: "fname",
+    required: true,
+    placeholder: "first name",
+  },
+  {
+    label: "",
+    type: "text",
+    name: "mname",
+    required: false,
+    placeholder: "middle name",
+  },
+  {
+    label: "",
+    type: "text",
+    name: "lname",
+    required: true,
+    placeholder: "last name",
+  },
+  {
+    label: "Address",
+    type: "text",
+    name: "street",
+    required: true,
+    placeholder: "street number & name",
+  },
+  {
+    label: "",
+    type: "text",
+    name: "suburb",
+    required: true,
+    placeholder: "suburb",
+  },
+  {
+    label: "",
+    type: "number",
+    name: "postcode",
+    required: true,
+    placeholder: "postcode",
+  },
+];
 
-  const [form, setForm] = useState({});
+const secondaryInputs = [
+  {
+    label: "Email",
+    type: "email",
+    name: "email",
+    required: true,
+    placeholder: "email address",
+  },
+  {
+    label: "Password",
+    type: "password",
+    name: "password",
+    required: true,
+    placeholder: "password",
+  },
+  {
+    label: "Confirm Password",
+    type: "password",
+    name: "confirmPassword",
+    required: true,
+    placeholder: "confirm password",
+  },
+];
+
+export const SignupForm = ({ setResponse }) => {
+  const initialFormState = {
+    fname: "",
+    mname: "",
+    lname: "",
+    street: "",
+    suburb: "",
+    states: "",
+    postcode: null,
+    email: "",
+    password: "",
+    confirmPassword: "",
+  };
+
+  const [form, setForm] = useState(initialFormState);
 
   const handleOnChange = (e) => {
+    setResponse({});
+
     const { name, value } = e.target;
 
     setForm({
@@ -181,55 +183,59 @@ export const SignupForm = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    const {
-      name = `${form.fname} ${form.mname} ${form.lname}`,
-      address = `${form.street}, ${form.suburb}, ${form.states}, ${form.postcode}`,
-      email,
-      password,
-      confirmPassword,
-    } = form;
+    const { confirmPassword, ...rest } = form;
 
-    if (confirmPassword !== password) {
+    if (confirmPassword !== rest.password) {
       return alert("Password do not match. Please check and try again!");
     }
 
-    // creating user object in db table format
-    const userObj = {
-      name,
-      address,
-      email,
-      password,
-    };
-
     // store user info : call axios helper to make post api call
-    const data = await signupUser(userObj);
+    const data = await signupUser(rest);
+    setResponse(data);
 
-    // data.status === "success" && setForm(formInitialState);
+    data.status === "success" && setForm(initialFormState);
   };
 
   return (
     <>
       <SignupFormContainer onSubmit={handleOnSubmit}>
         {primaryInputs.map((item, i) => (
-          <CustomInput key={i} {...item} onChange={handleOnChange} />
+          <CustomInput
+            key={i}
+            {...item}
+            onChange={handleOnChange}
+            value={form[item.name] || ""}
+          />
         ))}
 
         <Form.Group style={{ marginBottom: "1rem" }}>
           <InputLabel>State</InputLabel>
           <br />
-          <SelectField name="states" required onChange={handleOnChange}>
-            <option value="">- Select -</option>
-            <option value="nsw">NSW</option>
-            <option value="qld">QLD</option>
-            <option value="sa">SA</option>
-            <option value="tas">TAS</option>
-            <option value="vic">VIC</option>
-            <option value="wa">WA</option>
+          <SelectField
+            name="states"
+            required
+            onChange={handleOnChange}
+            value={form["states"] || ""}
+          >
+            <option value="" className="text-light">
+              - Select -
+            </option>
+            <option value="NSW">NSW</option>
+            <option value="QLD">QLD</option>
+            <option value="SA">SA</option>
+            <option value="TAS">TAS</option>
+            <option value="VIC">VIC</option>
+            <option value="WA">WA</option>
           </SelectField>
         </Form.Group>
 
         {secondaryInputs.map((item, i) => (
-          <CustomInput key={i} {...item} onChange={handleOnChange} />
+          <CustomInput
+            key={i}
+            {...item}
+            onChange={handleOnChange}
+            value={form[item.name] || ""}
+          />
         ))}
 
         <LoginBtn type="submit">Signup</LoginBtn>

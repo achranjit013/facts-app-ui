@@ -1,6 +1,6 @@
 import React from "react";
 import { LoginForm } from "../components/LoginForm";
-import { Col, Container, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { styled } from "styled-components";
 
 const Main = styled.div`

@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { SignupForm } from "../components/SignupForm";
 import { styled } from "styled-components";
-import { Container } from "react-bootstrap";
+import { Alert, Container } from "react-bootstrap";
+
+// css
+const ContainerFluid = styled(Container)`
+  position: relative;
+`;
+
+const MainLeft = styled.div`
+  position: absolute;
+  top: 7rem;
+  left: 8rem;
+  color: darkturquoise;
+`;
 
 const Main = styled.div`
   display: flex;
@@ -21,10 +33,20 @@ const SignupIntro = styled.div`
   align-items: center;
   gap: 1rem;
 `;
+// end css
 
 export const SignupPage = () => {
+  const [response, setResponse] = useState({});
+
   return (
-    <Container fluid>
+    <ContainerFluid fluid>
+      <MainLeft>
+        {response.message && (
+          <Alert variant={response.status === "success" ? "success" : "danger"}>
+            {response.message}
+          </Alert>
+        )}
+      </MainLeft>
       <Main>
         <SignupIntro>
           <h1>Join our community!</h1>
@@ -33,11 +55,12 @@ export const SignupPage = () => {
             facts.
           </p>
         </SignupIntro>
+
         <SignupIntro>
           <h3>Signup!</h3>
-          <SignupForm />
+          <SignupForm setResponse={setResponse} />
         </SignupIntro>
       </Main>
-    </Container>
+    </ContainerFluid>
   );
 };
