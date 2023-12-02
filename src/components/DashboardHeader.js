@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import LogoImg from "../assets/logo.png";
 import { Button } from "react-bootstrap";
-import { CustomFactModal } from "./CustomFactModal";
-import { FactPostForm } from "./FactPostForm";
 
 const HeaderComponent = styled.div`
   margin-bottom: 40px;
@@ -28,6 +26,14 @@ const LogoImage = styled.img`
 
 const LogoText = styled.h1`
   font-family: "Coiny", sans-serif;
+  font-size: 32px;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-top: 6px;
+`;
+
+const LogoTextMain = styled.h1`
+  font-family: "Coiny", sans-serif;
   font-size: 42px;
   text-transform: uppercase;
   line-height: 1;
@@ -44,7 +50,6 @@ const BtnLink = styled(Button)`
   color: inherit;
   font-family: "Coiny", sans-serif;
   line-height: 1;
-  // font-size: 20px;
   font-size: 15px;
   padding: 20px 32px 17px;
   background-image: linear-gradient(135deg, #3b82f6, #16a34a, #ef4444, #eab308);
@@ -65,7 +70,6 @@ const LoginLink = styled(Link)`
   color: inherit;
   font-family: "Coiny", sans-serif;
   line-height: 1;
-  // font-size: 20px;
   font-size: 15px;
   padding: 20px 32px 17px;
   background-image: linear-gradient(135deg, #3b82f6, #16a34a, #ef4444, #eab308);
@@ -76,12 +80,21 @@ const LoginLink = styled(Link)`
   }
 `;
 
-export const DashboardHeader = ({ userObj, setResponse }) => {
-  const [modalShow, setModalShow] = useState(false);
+const HeaderLinks = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+`;
+
+export const DashboardHeader = ({ setResponse, getFacts, showModal }) => {
+  const userJson = sessionStorage.getItem("user");
+  const userObj = JSON.parse(userJson);
 
   const handleOnLogout = () => {
     sessionStorage.removeItem("user");
     setResponse("");
+    getFacts();
   };
 
   return (
@@ -96,27 +109,20 @@ export const DashboardHeader = ({ userObj, setResponse }) => {
         ) : (
           <>
             <LogoImage src={LogoImg} alt="logo" />
-            <LogoText>Today I Learned!</LogoText>
+            <LogoTextMain>Today I Learned!</LogoTextMain>
           </>
         )}
       </Logo>
       {userObj?._id ? (
-        <>
-          <>
-            <BtnLink onClick={() => setModalShow(true)}>Post a fact</BtnLink>
-
-            <CustomFactModal
-              show={modalShow}
-              onHide={() => setModalShow(false)}
-            >
-              <FactPostForm onHide={() => setModalShow(false)} />
-            </CustomFactModal>
-          </>
+        <HeaderLinks>
+          <div>
+            <BtnLink onClick={showModal}>Post a fact</BtnLink>
+          </div>
 
           <LoginLink to="/" onClick={handleOnLogout}>
             Log out
           </LoginLink>
-        </>
+        </HeaderLinks>
       ) : (
         <LoginLink to="/login">
           Want to post a fact ? <br /> Please login!

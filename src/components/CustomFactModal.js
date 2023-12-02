@@ -1,5 +1,13 @@
 import React from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Modal, ModalTitle } from "react-bootstrap";
+import { styled } from "styled-components";
+
+const MTitle = styled(ModalTitle)`
+  font-family: "Coiny", sans-serif;
+  font-size: 22px;
+  text-transform: uppercase;
+  color: black;
+`;
 
 export const CustomFactModal = ({ children, ...props }) => {
   return (
@@ -10,14 +18,11 @@ export const CustomFactModal = ({ children, ...props }) => {
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Add new fact
-        </Modal.Title>
+        <MTitle id="contained-modal-title-vcenter">
+          {props.isedit === "true" ? "Update fact" : "Post new fact"}
+        </MTitle>
       </Modal.Header>
       <Modal.Body>{children}</Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
-      </Modal.Footer>
     </Modal>
   );
 };

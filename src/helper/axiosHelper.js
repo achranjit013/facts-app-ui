@@ -36,7 +36,32 @@ export const loginUser = async (userObj) => {
   }
 };
 
-// facts api - to get facts
+// facts api - add new fact
+export const addNewFact = async (factObj) => {
+  try {
+    const userId = getUserId();
+    if (!userId) {
+      return {
+        status: "error",
+        message: "User not found. Please log out and log in again.",
+      };
+    }
+
+    const { data } = await axios.post(factsAPI, factObj, {
+      headers: {
+        Authorization: userId,
+      },
+    });
+    return data;
+  } catch (error) {
+    return {
+      status: "error",
+      message: error.message,
+    };
+  }
+};
+
+// facts api - to get all facts (before loged in)
 export const getAllFacts = async () => {
   try {
     const { data } = await axios.get(factsAPI);
@@ -49,6 +74,7 @@ export const getAllFacts = async () => {
   }
 };
 
+// facts api - to get facts of specific user (after loged in)
 export const getAllFactsByUserId = async () => {
   try {
     const userId = getUserId();
@@ -56,6 +82,53 @@ export const getAllFactsByUserId = async () => {
       headers: {
         Authorization: userId,
       },
+    });
+    return data;
+  } catch (error) {
+    return {
+      status: "error",
+      message: error.message,
+    };
+  }
+};
+
+// facts api - to update votes of specific fact (before logged in)
+export const updateVotesByFactsId = async (factObj) => {
+  try {
+    const { data } = await axios.patch(factsAPI, factObj);
+    return data;
+  } catch (error) {
+    return {
+      status: "error",
+      message: error.message,
+    };
+  }
+};
+
+// facts api - to update facts (after logged in)
+export const updateFactById = async (factObj) => {
+  try {
+    console.log("i am in axios helper");
+    console.log(factObj);
+    const userId = getUserId();
+    const { data } = await axios.patch(factsAPI + "/user-dashboard", factObj, {
+      headers: {
+        Authorization: userId,
+      },
+    });
+    return data;
+  } catch (error) {
+    return {
+      status: "error",
+      message: error.message,
+    };
+  }
+};
+
+export const deleteSelectedFact = async (idObj) => {
+  try {
+    const { data } = await axios.delete(factsAPI, {
+      data: idObj,
     });
     return data;
   } catch (error) {

@@ -3,11 +3,9 @@ import { Routes, Route } from "react-router-dom";
 import { DashboardPage } from "./pages/DashboardPage";
 import { LoginPage } from "./pages/LoginPage";
 import { SignupPage } from "./pages/SignupPage";
-import { UserDashboardPage } from "./pages/UserDashboardPage";
-
 function App() {
   return (
-    <div className="wrapper">
+    <>
       <Routes>
         <Route path="/" element={<DashboardPage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -15,7 +13,7 @@ function App() {
         <Route path="/user-dashboard" element={<DashboardPage />} />
         {/* <Route path="/user-dashboard" element={<UserDashboardPage />} /> */}
       </Routes>
-    </div>
+    </>
   );
 }
 

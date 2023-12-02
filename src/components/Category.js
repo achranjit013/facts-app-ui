@@ -1,16 +1,6 @@
 import React from "react";
+import { Button } from "react-bootstrap";
 import { styled } from "styled-components";
-
-const categories = [
-  { name: "technology", color: "#3b82f6" },
-  { name: "science", color: "#16a34a" },
-  { name: "finance", color: "#ef4444" },
-  { name: "society", color: "#eab308" },
-  { name: "entertainment", color: "#db2777" },
-  { name: "health", color: "#14b8a6" },
-  { name: "history", color: "#f97316" },
-  { name: "news", color: "#8b5cf6" },
-];
 
 const SideBar = styled.ul``;
 
@@ -18,7 +8,7 @@ const CategoryList = styled.li`
   margin-bottom: 16px;
 `;
 
-const BtnAllCategory = styled.button`
+const BtnAllCategory = styled(Button)`
   border: none;
   border-radius: 100px;
   cursor: pointer;
@@ -39,7 +29,7 @@ const BtnAllCategory = styled.button`
   }
 `;
 
-const BtnCategory = styled.button`
+const BtnCategory = styled(Button)`
   border: none;
   border-radius: 100px;
   cursor: pointer;
@@ -60,17 +50,22 @@ const BtnCategory = styled.button`
   }
 `;
 
-export const Category = () => {
+export const Category = ({ categories, handleOnClick }) => {
   return (
     <aside>
       <SideBar>
         <CategoryList>
-          <BtnAllCategory>All</BtnAllCategory>
+          <BtnAllCategory onClick={() => handleOnClick("all")}>
+            All
+          </BtnAllCategory>
         </CategoryList>
 
         {categories.map((item, i) => (
           <CategoryList key={i}>
-            <BtnCategory style={{ background: item.color }}>
+            <BtnCategory
+              style={{ background: item.color }}
+              onClick={() => handleOnClick(item.name)}
+            >
               {item.name}
             </BtnCategory>
           </CategoryList>

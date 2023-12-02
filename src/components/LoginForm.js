@@ -9,7 +9,7 @@ import { loginUser } from "../helper/axiosHelper";
 const LoginFormContainer = styled(Form)`
   background: #44403c;
   margin-bottom: 40px;
-  padding: 16px 32px;
+  padding: 24px 32px;
   border-radius: 10px;
 
   display: flex;
@@ -30,15 +30,12 @@ const LoginBtn = styled.button`
   font-weight: bold;
   color: inherit;
   font-family: inherit;
-
-  &::placeholder {
-    color: #a8a29e;
-  }
 `;
 
 const SignupArea = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
 `;
 

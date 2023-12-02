@@ -5,9 +5,9 @@
 }
 
 body {
-  background: #292524;
-  color: #fafaf9;
-  font-family: "Sono", sans-serif;
+  background: #292524 !important;
+  color: #fafaf9 !important;
+  font-family: "Sono", sans-serif !important;
   padding: 48px 64px 0;
 }
 
@@ -17,10 +17,11 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Coiny", sans-serif;
+  font-family: "Coiny", sans-serif !important;
   text-transform: uppercase;
   line-height: 1;
   margin-top: 6px;
+  margin-bottom: 0 !important;
 }
 
 h1 {
@@ -33,4 +34,13 @@ h3 {
 
 ul {
   list-style: none;
+}
+
+ol,
+ul {
+  padding-left: 0 !important;
+}
+
+p {
+  margin-bottom: 0 !important;
 }
