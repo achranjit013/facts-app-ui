@@ -170,7 +170,6 @@ export const FactsList = ({
     }
   };
 
-  console.log(factsList);
   return (
     <FactUl>
       <FactLi style={{ color: "#000", justifyContent: "space-between" }}>
@@ -180,13 +179,13 @@ export const FactsList = ({
             fontWeight: "bold",
           }}
         >
-          {factsList?.length === 0
+          {factsList?.length === 0 || factsList === "undefined"
             ? "No facts to display!"
             : factsList?.length === 1
             ? "Displaying 1 fact!"
             : `Displaying ${factsList?.length} facts!`}
         </p>
-        {factsList?.length === 0 ? (
+        {factsList?.length === 0 || factsList === "undefined" ? (
           userObj?._id ? (
             <p>
               Please post a new fact in the{" "}
