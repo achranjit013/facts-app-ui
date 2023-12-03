@@ -71,7 +71,7 @@ export const DashboardPage = () => {
     if (catName === "all") {
       filteredList = factsList;
     } else {
-      filteredList = factsList.filter((item) => item.category === catName);
+      filteredList = factsList?.filter((item) => item.category === catName);
     }
 
     setFilteredFact(filteredList);

@@ -170,6 +170,7 @@ export const FactsList = ({
     }
   };
 
+  console.log(factsList);
   return (
     <FactUl>
       <FactLi style={{ color: "#000", justifyContent: "space-between" }}>
