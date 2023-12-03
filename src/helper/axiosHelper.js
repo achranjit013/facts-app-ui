@@ -108,8 +108,6 @@ export const updateVotesByFactsId = async (factObj) => {
 // facts api - to update facts (after logged in)
 export const updateFactById = async (factObj) => {
   try {
-    console.log("i am in axios helper");
-    console.log(factObj);
     const userId = getUserId();
     const { data } = await axios.patch(factsAPI + "/user-dashboard", factObj, {
       headers: {
@@ -127,8 +125,12 @@ export const updateFactById = async (factObj) => {
 
 export const deleteSelectedFact = async (idObj) => {
   try {
+    const userId = getUserId();
     const { data } = await axios.delete(factsAPI, {
       data: idObj,
+      headers: {
+        Authorization: userId,
+      },
     });
     return data;
   } catch (error) {

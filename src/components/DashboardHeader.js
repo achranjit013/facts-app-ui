@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
-import LogoImg from "../assets/logo.png";
+import LogoImg from "../assets/interesting-facts.png";
 import { Button } from "react-bootstrap";
 
 const HeaderComponent = styled.div`
@@ -10,6 +10,12 @@ const HeaderComponent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media (max-width: 768px) {
+    align-items: normal;
+    flex-direction: column;
+    gap: 16px;
+  }
 `;
 
 const Logo = styled.div`
@@ -17,11 +23,22 @@ const Logo = styled.div`
   align-items: center;
   justify-content: center;
   gap: 16px;
+
+  @media (max-width: 768px) {
+    justify-content: space-between;
+    gap: 0;
+  }
 `;
 
 const LogoImage = styled.img`
+  border-radius: 100%;
   height: 68px;
   width: 68px;
+
+  @media (max-width: 768px) {
+    height: 38px;
+    width: 38px;
+  }
 `;
 
 const LogoText = styled.h1`
@@ -30,6 +47,10 @@ const LogoText = styled.h1`
   text-transform: uppercase;
   line-height: 1;
   margin-top: 6px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 `;
 
 const LogoTextMain = styled.h1`
@@ -38,6 +59,10 @@ const LogoTextMain = styled.h1`
   text-transform: uppercase;
   line-height: 1;
   margin-top: 6px;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
 `;
 
 const BtnLink = styled(Button)`
@@ -58,6 +83,10 @@ const BtnLink = styled(Button)`
   &:hover {
     transform: scale(1.1) rotate(-2deg);
   }
+
+  @media (max-width: 768px) {
+    padding: 12px 18px 12px;
+  }
 `;
 
 const LoginLink = styled(Link)`
@@ -70,7 +99,7 @@ const LoginLink = styled(Link)`
   color: inherit;
   font-family: "Coiny", sans-serif;
   line-height: 1;
-  font-size: 15px;
+  font-size: 16px;
   padding: 20px 32px 17px;
   background-image: linear-gradient(135deg, #3b82f6, #16a34a, #ef4444, #eab308);
   transition: 0.3s;
@@ -78,22 +107,30 @@ const LoginLink = styled(Link)`
   &:hover {
     transform: scale(1.1) rotate(-2deg);
   }
+
+  @media (max-width: 768px) {
+    padding: 12px 18px 12px;
+  }
 `;
 
 const HeaderLinks = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
+  gap: 32px;
+
+  @media (max-width: 768px) {
+    justify-content: space-between;
+    gap: 0;
+  }
 `;
 
-export const DashboardHeader = ({ setResponse, getFacts, showModal }) => {
+export const DashboardHeader = ({ getFacts, showModal }) => {
   const userJson = sessionStorage.getItem("user");
   const userObj = JSON.parse(userJson);
 
   const handleOnLogout = () => {
     sessionStorage.removeItem("user");
-    setResponse("");
     getFacts();
   };
 

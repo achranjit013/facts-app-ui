@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { DashboardPage } from "./pages/DashboardPage";
 import { LoginPage } from "./pages/LoginPage";
 import { SignupPage } from "./pages/SignupPage";
+import { ToastContainer } from "react-toastify";
 function App() {
   return (
     <>
@@ -13,6 +14,19 @@ function App() {
         <Route path="/user-dashboard" element={<DashboardPage />} />
         {/* <Route path="/user-dashboard" element={<UserDashboardPage />} /> */}
       </Routes>
+
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </>
   );
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
-import { Alert, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import {
   deleteSelectedFact,
   updateVotesByFactsId,
@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 const FactUl = styled.ul`
   overflow: scroll;
 `;
+
 const FactLi = styled.li`
   font-size: 20px;
   line-height: 1.4;
@@ -27,6 +28,11 @@ const FactLi = styled.li`
   display: flex;
   align-items: center;
   gap: 24px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: start;
+  }
 `;
 
 const FactSource = styled(Link)`
@@ -64,6 +70,10 @@ const VoteBtnsContainer = styled.div`
 
   display: flex;
   gap: 8px;
+
+  @media (max-width: 768px) {
+    margin-left: inherit;
+  }
 `;
 
 const VoteBtns = styled(Button)`
@@ -102,7 +112,6 @@ export const FactsList = ({
   getFacts,
   factsList,
   categories,
-  response,
   currentCategory,
   handleOnEdit,
 }) => {
@@ -146,15 +155,24 @@ export const FactsList = ({
       // calling api to delete
       const data = await deleteSelectedFact({ idArr });
 
+      toast[data.status](data.message, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
       data.status === "success" && getFacts();
     }
   };
 
   return (
     <FactUl>
-      {response !== "" && <Alert variant="danger">{response}</Alert>}
-
-      <FactLi style={{ color: "black", justifyContent: "space-between" }}>
+      <FactLi style={{ color: "#000", justifyContent: "space-between" }}>
         <p
           style={{
             textTransform: "uppercase",
@@ -170,7 +188,7 @@ export const FactsList = ({
         {factsList?.length === 0 ? (
           userObj?._id ? (
             <p>
-              Please post a new fact on{" "}
+              Please post a new fact in the{" "}
               <span style={{ textTransform: "uppercase", fontWeight: "600" }}>
                 {currentCategory}
               </span>{" "}
@@ -179,7 +197,7 @@ export const FactsList = ({
           ) : (
             <p>
               Please <LoginLink to="/login">login</LoginLink> to be the first
-              person to post a new fact on{" "}
+              person to post a new fact in the{" "}
               <span style={{ textTransform: "uppercase", fontWeight: "600" }}>
                 {currentCategory}
               </span>{" "}
@@ -188,9 +206,9 @@ export const FactsList = ({
           )
         ) : (
           userObj?._id && (
-            <p style={{ display: "flex", gap: "10px", fontWeight: "500" }}>
-              <input type="checkbox" />
-              check the box to select all to delete
+            <p style={{ display: "flex", gap: "16px", fontWeight: "500" }}>
+              {/* <input type="checkbox" />
+              check the box to select all to delete */}
             </p>
           )
         )}
@@ -200,7 +218,10 @@ export const FactsList = ({
         <FactLi key={i}>
           <p>
             {item.votesLike + item.votesMindblowing < item.votesDislike ? (
-              <Disputed>[⛔️ DISPUTED]</Disputed>
+              <Disputed>
+                [⛔️ DISPUTED]
+                <br />
+              </Disputed>
             ) : (
               ""
             )}
@@ -231,10 +252,7 @@ export const FactsList = ({
                 }
               >
                 <RiEdit2Line style={{ color: "aqua" }} />
-                <Tooltip
-                  anchorSelect="#update"
-                  style={{ background: "transparent" }}
-                >
+                <Tooltip anchorSelect="#update" style={{ background: "aqua" }}>
                   <span>click to update your fact!</span>
                 </Tooltip>
               </VoteBtns>
@@ -243,7 +261,7 @@ export const FactsList = ({
                 <MdOutlineDeleteForever style={{ color: "orangered" }} />
                 <Tooltip
                   anchorSelect="#delete"
-                  style={{ background: "transparent" }}
+                  style={{ background: "orangered" }}
                 >
                   <span>click to delete your fact!</span>
                 </Tooltip>

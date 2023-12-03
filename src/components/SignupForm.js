@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
-import { Form, FormLabel, FormSelect } from "react-bootstrap";
+import { Form, FormSelect } from "react-bootstrap";
 import { CustomInput } from "./CustomInput";
 import { signupUser } from "../helper/axiosHelper";
+import { toast } from "react-toastify";
 
 // css
 const SignupFormContainer = styled(Form)`
   background: #44403c;
   margin-bottom: 40px;
   padding: 16px 32px;
-  border-radius: 10px;
+  border-radius: 16px;
 
   display: flex;
   flex-direction: column;
@@ -21,11 +22,16 @@ const SignupFormContainer = styled(Form)`
   height: 70vh;
 
   overflow: scroll;
+
+  @media (max-width: 768px) {
+    width: 80vw;
+    height: 50vh;
+  }
 `;
 
 const LoginBtn = styled.button`
   cursor: pointer;
-  width: 22vw;
+  width: 354px;
   background: #78716c;
   border: none;
   border-radius: 100px;
@@ -38,12 +44,16 @@ const LoginBtn = styled.button`
   &::placeholder {
     color: #a8a29e;
   }
+
+  @media (max-width: 768px) {
+    width: 300px;
+  }
 `;
 
 const SignupArea = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 16px;
 `;
 
 const SignupLink = styled(Link)`
@@ -60,15 +70,8 @@ const SignupLink = styled(Link)`
   background: #78716c;
 `;
 
-const InputLabel = styled(FormLabel)`
-  padding: 16px;
-  font-size: 18px;
-  color: inherit;
-  font-family: inherit;
-`;
-
 const SelectField = styled(FormSelect)`
-  width: 22vw;
+  width: 354px;
   background: #78716c;
   border: none;
   border-radius: 100px;
@@ -80,80 +83,14 @@ const SelectField = styled(FormSelect)`
   &::placeholder {
     color: #a8a29e;
   }
+
+  @media (max-width: 768px) {
+    width: 300px;
+  }
 `;
 // end css
 
-// custom inputs
-const primaryInputs = [
-  {
-    label: "Full name",
-    type: "text",
-    name: "fname",
-    required: true,
-    placeholder: "first name",
-  },
-  {
-    label: "",
-    type: "text",
-    name: "mname",
-    required: false,
-    placeholder: "middle name",
-  },
-  {
-    label: "",
-    type: "text",
-    name: "lname",
-    required: true,
-    placeholder: "last name",
-  },
-  {
-    label: "Address",
-    type: "text",
-    name: "street",
-    required: true,
-    placeholder: "street number & name",
-  },
-  {
-    label: "",
-    type: "text",
-    name: "suburb",
-    required: true,
-    placeholder: "suburb",
-  },
-  {
-    label: "",
-    type: "number",
-    name: "postcode",
-    required: true,
-    placeholder: "postcode",
-  },
-];
-
-const secondaryInputs = [
-  {
-    label: "Email",
-    type: "email",
-    name: "email",
-    required: true,
-    placeholder: "email address",
-  },
-  {
-    label: "Password",
-    type: "password",
-    name: "password",
-    required: true,
-    placeholder: "password",
-  },
-  {
-    label: "Confirm Password",
-    type: "password",
-    name: "confirmPassword",
-    required: true,
-    placeholder: "confirm password",
-  },
-];
-
-export const SignupForm = ({ setResponse }) => {
+export const SignupForm = () => {
   const initialFormState = {
     fname: "",
     mname: "",
@@ -170,7 +107,7 @@ export const SignupForm = ({ setResponse }) => {
   const [form, setForm] = useState(initialFormState);
 
   const handleOnChange = (e) => {
-    setResponse({});
+    // setResponse({});
 
     const { name, value } = e.target;
 
@@ -191,10 +128,91 @@ export const SignupForm = ({ setResponse }) => {
 
     // store user info : call axios helper to make post api call
     const data = await signupUser(rest);
-    setResponse(data);
+    // setResponse(data);
+
+    toast[data.status](data.message, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
 
     data.status === "success" && setForm(initialFormState);
   };
+
+  // custom inputs
+  const primaryInputs = [
+    {
+      label: "Full name",
+      type: "text",
+      name: "fname",
+      required: true,
+      placeholder: "first name",
+    },
+    {
+      label: "",
+      type: "text",
+      name: "mname",
+      required: false,
+      placeholder: "middle name",
+    },
+    {
+      label: "",
+      type: "text",
+      name: "lname",
+      required: true,
+      placeholder: "last name",
+    },
+    {
+      label: "Address",
+      type: "text",
+      name: "street",
+      required: true,
+      placeholder: "street number & name",
+    },
+    {
+      label: "",
+      type: "text",
+      name: "suburb",
+      required: true,
+      placeholder: "suburb",
+    },
+    {
+      label: "",
+      type: "number",
+      name: "postcode",
+      required: true,
+      placeholder: "postcode",
+    },
+  ];
+
+  const secondaryInputs = [
+    {
+      label: "Email",
+      type: "email",
+      name: "email",
+      required: true,
+      placeholder: "email address",
+    },
+    {
+      label: "Password",
+      type: "password",
+      name: "password",
+      required: true,
+      placeholder: "password",
+    },
+    {
+      label: "Confirm Password",
+      type: "password",
+      name: "confirmPassword",
+      required: true,
+      placeholder: "confirm password",
+    },
+  ];
 
   return (
     <>
@@ -209,7 +227,7 @@ export const SignupForm = ({ setResponse }) => {
         ))}
 
         <Form.Group style={{ marginBottom: "1rem" }}>
-          <InputLabel>State</InputLabel>
+          <Form.Label>State</Form.Label>
           <br />
           <SelectField
             name="states"
@@ -217,9 +235,7 @@ export const SignupForm = ({ setResponse }) => {
             onChange={handleOnChange}
             value={form["states"] || ""}
           >
-            <option value="" className="text-light">
-              - Select -
-            </option>
+            <option value="">- select -</option>
             <option value="NSW">NSW</option>
             <option value="QLD">QLD</option>
             <option value="SA">SA</option>

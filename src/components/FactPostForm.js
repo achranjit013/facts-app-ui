@@ -3,23 +3,9 @@ import { Button, Col, Form, FormSelect, Row } from "react-bootstrap";
 import { CustomInput } from "./CustomInput";
 import { styled } from "styled-components";
 import { addNewFact, updateFactById } from "../helper/axiosHelper";
+import { toast } from "react-toastify";
 
-// const inputs = [
-//   {
-//     type: "text",
-//     name: "fact",
-//     maxLength: "200",
-//     placeholder: "share a fact...",
-//     required: true,
-//   },
-//   {
-//     type: "text",
-//     name: "source",
-//     placeholder: "trustworthy source...",
-//     required: true,
-//   },
-// ];
-
+// css
 const ModForm = styled(Form)`
   background: #292524;
 `;
@@ -38,6 +24,10 @@ const IpFormSelect = styled(FormSelect)`
   &::placeholder {
     color: #a8a29e;
   }
+
+  @media (max-width: 768px) {
+    width: 300px;
+  }
 `;
 
 const BtnSubmit = styled(Button)`
@@ -52,17 +42,27 @@ const BtnSubmit = styled(Button)`
   font-size: 18px;
   padding: 16px;
   background-image: linear-gradient(135deg, #3b82f6, #16a34a, #ef4444, #eab308);
+
+  @media (max-width: 768px) {
+    width: 300px;
+  }
 `;
+// end css
 
 export const FactPostForm = ({
   hideModal,
   categories,
   getFacts,
-  setResponse,
   isEdit,
   editFormObj,
 }) => {
-  const [form, setForm] = useState(isEdit ? editFormObj : {});
+  const initialState = {
+    fact: "",
+    source: "",
+    category: "",
+  };
+
+  const [form, setForm] = useState(isEdit ? editFormObj : initialState);
 
   const inputs = [
     {
@@ -82,6 +82,19 @@ export const FactPostForm = ({
     },
   ];
 
+  // checking source url
+  const isValidHttpUrl = (string) => {
+    let url;
+
+    try {
+      url = new URL(string);
+    } catch (_) {
+      return false;
+    }
+
+    return url.protocol === "http:" || url.protocol === "https:";
+  };
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
 
@@ -94,24 +107,65 @@ export const FactPostForm = ({
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    const data = await addNewFact(form);
+    const checkSourceURL = isValidHttpUrl(form.source);
+    let alertMessage = "";
+    let alertStatus = "";
 
-    if (data.status === "success") {
-      setResponse("");
-      getFacts();
+    if (checkSourceURL) {
+      const data = await addNewFact(form);
+
+      alertStatus = data.status;
+      alertMessage = data.message;
+
+      data.status === "success" && getFacts() && hideModal();
+    } else {
+      alertStatus = "error";
+      alertMessage = "Please check your source url and try again!";
     }
+
+    toast[alertStatus](alertMessage, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
   };
 
   const handleOnEdit = async (e) => {
     e.preventDefault();
-    console.log(editFormObj._id);
+
     const { _id } = editFormObj._id;
 
-    const data = await updateFactById({ _id, ...form });
-    if (data.status === "success") {
-      setResponse("");
-      getFacts();
+    const checkSourceURL = isValidHttpUrl(form.source);
+    let alertMessage = "";
+    let alertStatus = "";
+
+    if (checkSourceURL) {
+      const data = await updateFactById({ _id, ...form });
+
+      alertStatus = data.status;
+      alertMessage = data.message;
+
+      data.status === "success" && getFacts() && hideModal();
+    } else {
+      alertStatus = "error";
+      alertMessage = "Please check your source url and try again!";
     }
+
+    toast[alertStatus](alertMessage, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
   };
 
   return (
@@ -134,6 +188,7 @@ export const FactPostForm = ({
                 name="category"
                 onChange={handleOnChange}
                 value={form.category}
+                required
               >
                 <option value="">-- choose category --</option>
                 {categories.map((item, i) => (
@@ -147,7 +202,7 @@ export const FactPostForm = ({
           <Col>
             <Form.Group>
               <div>
-                <BtnSubmit type="submit" onClick={hideModal}>
+                <BtnSubmit type="submit">
                   {isEdit ? "Update" : "Post"}
                 </BtnSubmit>
               </div>

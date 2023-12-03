@@ -11,6 +11,12 @@ body {
   padding: 48px 64px 0;
 }
 
+@media (max-width: 768px) {
+  body {
+    padding: 48px 16px 0;
+  }
+}
+
 h1,
 h2,
 h3,
@@ -22,14 +28,6 @@ h6 {
   line-height: 1;
   margin-top: 6px;
   margin-bottom: 0 !important;
-}
-
-h1 {
-  font-size: 42px;
-}
-
-h3 {
-  font-size: 32px;
 }
 
 ul {

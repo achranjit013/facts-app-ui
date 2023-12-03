@@ -2,7 +2,12 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { styled } from "styled-components";
 
-const SideBar = styled.ul``;
+const SideBar = styled.ul`
+  display: block;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
 
 const CategoryList = styled.li`
   margin-bottom: 16px;
