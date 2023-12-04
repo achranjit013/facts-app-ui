@@ -107,8 +107,6 @@ export const SignupForm = () => {
   const [form, setForm] = useState(initialFormState);
 
   const handleOnChange = (e) => {
-    // setResponse({});
-
     const { name, value } = e.target;
 
     setForm({
@@ -128,7 +126,6 @@ export const SignupForm = () => {
 
     // store user info : call axios helper to make post api call
     const data = await signupUser(rest);
-    // setResponse(data);
 
     toast[data.status](data.message, {
       position: "top-center",

@@ -179,29 +179,43 @@ export const FactsList = ({
             fontWeight: "bold",
           }}
         >
-          {factsList?.length === 0 || factsList === "undefined"
+          {factsList?.length === 0
             ? "No facts to display!"
             : factsList?.length === 1
             ? "Displaying 1 fact!"
             : `Displaying ${factsList?.length} facts!`}
         </p>
-        {factsList?.length === 0 || factsList === "undefined" ? (
+        {factsList?.length === 0 && currentCategory ? (
           userObj?._id ? (
             <p>
-              Please post a new fact in the{" "}
-              <span style={{ textTransform: "uppercase", fontWeight: "600" }}>
-                {currentCategory}
-              </span>{" "}
-              category.
+              Please post a new fact{" "}
+              {currentCategory !== "all" && (
+                <>
+                  in the{" "}
+                  <span
+                    style={{ textTransform: "uppercase", fontWeight: "600" }}
+                  >
+                    {currentCategory}
+                  </span>{" "}
+                  category.
+                </>
+              )}
             </p>
           ) : (
             <p>
               Please <LoginLink to="/login">login</LoginLink> to be the first
-              person to post a new fact in the{" "}
-              <span style={{ textTransform: "uppercase", fontWeight: "600" }}>
-                {currentCategory}
-              </span>{" "}
-              category.
+              person to post a new fact{" "}
+              {currentCategory !== "all" && (
+                <>
+                  in the{" "}
+                  <span
+                    style={{ textTransform: "uppercase", fontWeight: "600" }}
+                  >
+                    {currentCategory}
+                  </span>{" "}
+                  category.
+                </>
+              )}
             </p>
           )
         ) : (
